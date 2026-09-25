@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cain's portfolio, music, and selected projects.">
+    <title>Cain · Portfolio &amp; Music</title>
+    <style>
+        :root {
+            --bg: #0b1120;
+            --surface: #111c2e;
+            --surface-raised: #172338;
+            --line: #26364d;
+            --text: #93a4bb;
+            --heading: #f5f7fb;
+            --accent: #58c7f3;
+            --accent-soft: rgba(88, 199, 243, 0.12);
+            --success: #7dd3a7;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(88, 199, 243, 0.05), transparent 34%), linear-gradient(315deg, rgba(125, 211, 167, 0.035), transparent 30%);
+        }
+
+        a { color: inherit; }
+
+        .container { width: min(100% - 2rem, 760px); margin: 0 auto; }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2rem 0 5.5rem;
+            font-size: 0.8rem;
+        }
+
+        .brand { color: var(--heading); font-weight: 700; letter-spacing: 0.02em; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1rem; }
+        .nav-links a { text-decoration: none; transition: color 180ms ease; }
+        .nav-links a:hover, .nav-links a:focus-visible { color: var(--heading); }
+
+        header { max-width: 680px; margin-bottom: 5.5rem; }
+        h1 { margin: 0 0 0.55rem; color: var(--heading); font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.04em; }
+        .subtitle { margin-bottom: 1.5rem; color: var(--accent); font-size: 0.92rem; }
+        p { margin: 0 0 1rem; }
+
+        section { margin-bottom: 5.5rem; scroll-margin-top: 1.5rem; }
+        h2 { display: flex; align-items: center; gap: 0.65rem; margin: 0 0 1.5rem; color: var(--heading); font-size: 0.78rem; letter-spacing: 0.13em; text-transform: uppercase; }
+        h2::before { content: "//"; color: var(--accent); }
+
+        .music-player-panel { padding: 1.25rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16); }
+        .player-row { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; }
+        .track-details { min-width: 0; }
+        .track-name { display: block; overflow: hidden; color: var(--heading); font-size: 0.95rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+        .track-status { display: block; color: var(--accent); font-size: 0.75rem; }
+        .player-controls { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+        .btn { min-height: 2.35rem; border: 1px solid var(--line); border-radius: 5px; padding: 0.35rem 0.7rem; background: transparent; color: var(--heading); cursor: pointer; font: inherit; font-size: 0.78rem; transition: border-color 180ms ease, background 180ms ease, color 180ms ease; }
+        .btn:hover, .btn:focus-visible { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .volume-box { display: flex; align-items: center; gap: 0.45rem; color: var(--text); font-size: 0.85rem; }
+        .volume-box input { width: 72px; accent-color: var(--accent); cursor: pointer; }
+
+        .badge-list { display: flex; flex-wrap: wrap; gap: 0.65rem; padding: 0; margin: 1.25rem 0 0; list-style: none; }
+        .badge-list a { display: inline-block; padding: 0.4rem 0.7rem; border: 1px solid var(--line); border-radius: 5px; color: var(--heading); font-size: 0.78rem; text-decoration: none; transition: border-color 180ms ease, color 180ms ease; }
+        .badge-list a:hover, .badge-list a:focus-visible { border-color: var(--accent); color: var(--accent); }
+
+        .project-item { padding: 0 0 1.6rem; margin-bottom: 1.6rem; border-bottom: 1px solid var(--line); }
+        .project-item:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+        .project-header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 0.45rem; }
+        .project-title { color: var(--heading); font-size: 1rem; font-weight: 700; }
+        .live-tag { padding: 0.1rem 0.45rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); font-size: 0.68rem; font-weight: 700; white-space: nowrap; }
+
+        footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.75rem 0 2.5rem; border-top: 1px solid var(--line); color: var(--text); font-size: 0.72rem; }
+        footer strong { color: var(--heading); font-weight: 400; }
+
+        @media (max-width: 620px) {
+            nav { align-items: flex-start; flex-direction: column; padding-bottom: 4rem; }
+            .nav-links { justify-content: flex-start; gap: 0.75rem; }
+            header, section { margin-bottom: 4rem; }
+            .player-row { align-items: stretch; flex-direction: column; }
+            .player-controls { justify-content: space-between; flex-wrap: wrap; }
+            .volume-box { margin-left: auto; }
+            footer { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav aria-label="Primary navigation">
+            <a class="brand" href="#about">Cain</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#music">Music</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+
+        <header id="about">
+            <h1>Cain</h1>
+            <div class="subtitle">@ Atul Mathur · Software Developer &amp; Musician </div>
+            <p>I build clean frontend interfaces and compose original audio tracks. I care intensely about code optimization, network performance, and the subtle mechanics of how music loops feel in dynamic environments.</p>
+        </header>
+
+        <main>
+            <section id="music">
+                <h2>01 · my music</h2>
+                <div class="music-player-panel">
+                    <audio id="core-audio-engine" preload="metadata"></audio>
+                    <div class="player-row">
+                        <div class="track-details">
+                            <span class="track-name" id="display-track-title">Loading track...</span>
+                            <span class="track-status" id="display-track-status">Ready to play</span>
+                        </div>
+                        <div class="player-controls">
+                            <button class="btn" type="button" id="previous-track" aria-label="Previous track">⏮</button>
+                            <button class="btn" type="button" id="action-play-btn">▶ Play</button>
+                            <button class="btn" type="button" id="next-track" aria-label="Next track">⏭</button>
+                            <label class="volume-box" for="volume-slider">
+                                <span aria-hidden="true">🔈</span>
+                                <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.7" aria-label="Volume">
+                                <span aria-hidden="true">🔊</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <p>Listen to my music catalog released on mainstream streaming services above while you explore my profile:D </p>
+                <ul class="badge-list">
+                    <li><a href="https://music.youtube.com/" target="_blank" rel="noreferrer">YouTube Music</a></li>
+                    <li><a href="https://open.spotify.com/" target="_blank" rel="noreferrer">Spotify</a></li>
+                </ul>
+            </section>
+
+            <section id="projects">
+                <h2>02 · projects</h2>
+                <article class="project-item">
+                    <div class="project-header">
+                        <a class="project-title" href="https://github.com/Cain-77/Project-Ray" target="_blank" rel="noreferrer">Project Ray</a>
+                        <span class="live-tag">released</span>
+                    </div>
+                    <p>A Windows desktop application for creating VTuber-style explainer videos. Search a topic, generate narrated scenes with selectable voices and Live2D avatars, then export the finished video.</p>
+                </article>
+                <article class="project-item">
+                    <div class="project-header">
+                        <span class="project-title">Portfolio Edge Sandbox</span>
+                        <span class="live-tag">open-source</span>
+                    </div>
+                    <p>A template repository designed specifically for deploying high-performance static portfolios instantly onto globally distributed edge servers.</p>
+                </article>
+            </section>
+
+            <section id="contact">
+                <h2>03 · contact</h2>
+                <p>If you like the sound engine or want to collaborate on structural layouts, reach me through my active channels.</p>
+                <ul class="badge-list">
+                    <li><a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a></li>
+                    <li><a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+                    <li><a href="mailto:hello@example.com">Email</a></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <span><strong>Gmail</strong> · © 2026 Cain</span>
+            <span>Built with raw execution design</span>
+        </footer>
+    </div>
+
+    <script>
+        const audioPlaylist = [
+            { title: "Ambient Composition I", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "Synthesized Routine II", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { title: "Mechanical Looping III", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" }
+        ];
+
+        let indexPointer = 0;
+        const audioElement = document.getElementById("core-audio-engine");
+        const interfacePlayButton = document.getElementById("action-play-btn");
+        const textTrackTitle = document.getElementById("display-track-title");
+        const textTrackStatus = document.getElementById("display-track-status");
+        const setPlayingState = (isPlaying) => {
+            interfacePlayButton.textContent = isPlaying ? "⏸ Pause" : "▶ Play";
+            textTrackStatus.textContent = isPlaying ? "Now looping" : "Ready to play";
+        };
+
+        function mountTrack(targetIndex) {
+            indexPointer = targetIndex;
+            audioElement.src = audioPlaylist[indexPointer].url;
+            textTrackTitle.textContent = audioPlaylist[indexPointer].title;
+            audioElement.load();
+        }
+
+        async function playCurrentTrack() {
+            try {
+                await audioElement.play();
+                setPlayingState(true);
+            } catch (error) {
+                textTrackStatus.textContent = "Playback unavailable";
+                setPlayingState(false);
+            }
+        }
+
+        function togglePlayback() {
+            if (audioElement.paused) {
+                playCurrentTrack();
+            } else {
+                audioElement.pause();
+                setPlayingState(false);
+            }
+        }
+
+        function changeTrack(direction) {
+            const nextIndex = (indexPointer + direction + audioPlaylist.length) % audioPlaylist.length;
+            mountTrack(nextIndex);
+            playCurrentTrack();
+        }
+
+        audioElement.addEventListener("ended", () => changeTrack(1));
+        audioElement.addEventListener("pause", () => setPlayingState(false));
+        audioElement.addEventListener("play", () => setPlayingState(true));
+        document.getElementById("previous-track").addEventListener("click", () => changeTrack(-1));
+        document.getElementById("next-track").addEventListener("click", () => changeTrack(1));
+        interfacePlayButton.addEventListener("click", togglePlayback);
+        document.getElementById("volume-slider").addEventListener("input", (event) => {
+            audioElement.volume = event.target.value;
+        });
+
+        audioElement.volume = 0.7;
+        mountTrack(0);
+    </script>
+</body>
+</html>
